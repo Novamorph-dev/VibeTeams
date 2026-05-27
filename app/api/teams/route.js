@@ -34,7 +34,7 @@ export async function GET(request) {
 
     // Fetch all members in one simple query — no array serialization issues
     let members = [];
-    if (teamIds.length > 0) {
+    if (teams.length > 0) {
       members = await sql`
         SELECT id, name, email, domain, team_id
         FROM users
