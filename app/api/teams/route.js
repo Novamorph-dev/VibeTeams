@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import sql from "@/lib/db";
 import { generateTeamName } from "@/lib/constants";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/teams — fetch all teams with their members
 export async function GET(request) {
   try {
@@ -48,7 +50,12 @@ export async function GET(request) {
       members: members.filter((m) => m.team_id === team.id),
     }));
 
-    return NextResponse.json({ teams: teamsWithMembers });
+    return NextResponse.json({ teams: teamsWithMembers }, {
+      headers: {
+        "Cache-Control": "no-store, no-cache, must-revalidate",
+        "Pragma": "no-cache",
+      },
+    });
   } catch (error) {
     console.error("Get teams error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

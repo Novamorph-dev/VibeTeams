@@ -123,7 +123,7 @@ export default function Home() {
               {[
                 { value: participants.length, label: "Participants" },
                 { value: teamed, label: "In Teams" },
-                { value: participants.length - teamed, label: "Looking" },
+                { value: participants.length - teamed, label: "Unassigned" },
               ].map((s) => (
                 <div key={s.label}>
                   <div className="font-display text-2xl font-bold text-slate-900">{s.value}</div>
