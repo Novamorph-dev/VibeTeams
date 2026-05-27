@@ -32,22 +32,21 @@ export async function GET(request) {
       `;
     }
 
-    // Fetch members for each team
-    const teamIds = teams.map((t) => t.id);
+    // Fetch all members in one simple query — no array serialization issues
     let members = [];
-
     if (teamIds.length > 0) {
       members = await sql`
         SELECT id, name, email, domain, team_id
         FROM users
-        WHERE team_id = ANY(${teamIds})
+        WHERE team_id IS NOT NULL
         ORDER BY created_at ASC
       `;
     }
 
     const teamsWithMembers = teams.map((team) => ({
       ...team,
-      members: members.filter((m) => m.team_id === team.id),
+      // Use == not === to handle string/number type mismatch
+      members: members.filter((m) => m.team_id == team.id),
     }));
 
     return NextResponse.json({ teams: teamsWithMembers }, {

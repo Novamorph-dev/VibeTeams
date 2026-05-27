@@ -28,7 +28,7 @@ export default function DashboardPage() {
     setLoading(true);
     try {
       const [teamsRes, userRes] = await Promise.all([
-        fetch("/api/teams"),
+        fetch(`/api/teams?t=${Date.now()}`, { cache: "no-store" }),
         fetch("/api/users/check", {
           method: "POST",
           headers: { "Content-Type": "application/json" },

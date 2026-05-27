@@ -15,7 +15,7 @@ export default function Home() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    fetch("/api/users", { cache: "no-store" })
+    fetch(`/api/users?t=${Date.now()}`, { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => setParticipants(d.users || []))
       .catch(() => {})
