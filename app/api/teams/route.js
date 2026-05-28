@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { unstable_noStore as noStore } from "next/cache";
 import sql from "@/lib/db";
 import { generateTeamName } from "@/lib/constants";
 
@@ -6,6 +7,7 @@ export const dynamic = "force-dynamic";
 
 // GET /api/teams — fetch all teams with their members
 export async function GET(request) {
+  noStore();
   try {
     const { searchParams } = new URL(request.url);
     const domain = searchParams.get("domain");

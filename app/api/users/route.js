@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
+import { unstable_noStore as noStore } from "next/cache";
 import sql from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function POST() {
+  noStore();
   try {
     const users = await sql`
       SELECT 

@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { unstable_noStore as noStore } from "next/cache";
 import sql from "@/lib/db";
 
 export async function POST(request) {
+  noStore();
   try {
     const { userEmail } = await request.json();
     if (!userEmail) {

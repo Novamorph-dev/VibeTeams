@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { unstable_noStore as noStore } from "next/cache";
 import sql from "@/lib/db";
 import { generateTeamName } from "@/lib/constants";
 
@@ -7,6 +8,7 @@ export const dynamic = "force-dynamic";
 const MAX_TEAM_SIZE = 4;
 
 export async function POST(request) {
+  noStore();
   try {
     const { userEmail } = await request.json();
 
