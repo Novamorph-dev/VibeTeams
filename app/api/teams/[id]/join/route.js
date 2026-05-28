@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import sql from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 const MAX_TEAM_SIZE = 4;
 
 export async function POST(request, { params }) {

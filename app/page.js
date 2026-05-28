@@ -15,11 +15,18 @@ export default function Home() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    fetch(`/api/users?t=${Date.now()}`, { cache: "no-store" })
-      .then((r) => r.json())
-      .then((d) => setParticipants(d.users || []))
-      .catch(() => {})
-      .finally(() => setLoadingParticipants(false));
+    const fetchParticipants = async () => {
+      try {
+        const res = await fetch(`/api/users?t=${Date.now()}`, {
+          cache: "no-store",
+          headers: { "Pragma": "no-cache", "Cache-Control": "no-cache" },
+        });
+        const d = await res.json();
+        setParticipants(d.users || []);
+      } catch {}
+      finally { setLoadingParticipants(false); }
+    };
+    fetchParticipants();
   }, []);
 
   const handleSubmit = async (e) => {
