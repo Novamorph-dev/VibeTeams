@@ -6,11 +6,20 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const users = await sql`
-      SELECT id, name, email, domain, team_id
+      SELECT 
+        id::int,
+        COALESCE(name, '') as name,
+        COALESCE(email, '') as email,
+        COALESCE(domain, '') as domain,
+        team_id::text
       FROM users
-      ORDER BY created_at ASC
+      ORDER BY id ASC
     `;
-    return NextResponse.json({ users }, {
+
+    console.log(`Total users from DB: ${users.length}`);
+    console.log(`User IDs returned: ${users.map(u => u.id).join(', ')}`);
+
+    return NextResponse.json({ users, count: users.length, ids: users.map(u => u.id) }, {
       headers: {
         "Cache-Control": "no-store, no-cache, must-revalidate",
         "Pragma": "no-cache",
@@ -18,6 +27,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Get users error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
