@@ -17,14 +17,28 @@ export default function Home() {
   useEffect(() => {
     const fetchParticipants = async () => {
       try {
-        const res = await fetch(`/api/users?t=${Date.now()}`, {
+        const res = await fetch(`/api/users`, {
+          method: "GET",
           cache: "no-store",
-          headers: { "Pragma": "no-cache", "Cache-Control": "no-cache" },
+          headers: {
+            "Pragma": "no-cache",
+            "Cache-Control": "no-cache",
+          },
         });
         const d = await res.json();
-        setParticipants(d.users || []);
-      } catch {}
-      finally { setLoadingParticipants(false); }
+        console.log("Participants API response:", d);
+        if (d.users && Array.isArray(d.users)) {
+          setParticipants(d.users);
+        } else {
+          console.error("Unexpected response shape:", d);
+          setParticipants([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch participants:", err);
+        setParticipants([]);
+      } finally {
+        setLoadingParticipants(false);
+      }
     };
     fetchParticipants();
   }, []);
