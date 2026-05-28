@@ -51,8 +51,11 @@ export async function GET(request) {
 
     return NextResponse.json({ teams: teamsWithMembers }, {
       headers: {
-        "Cache-Control": "no-store, no-cache, must-revalidate",
+        "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
         "Pragma": "no-cache",
+        "Surrogate-Control": "no-store",
+        "CDN-Cache-Control": "no-store",
+        "Vercel-CDN-Cache-Control": "no-store",
       },
     });
   } catch (error) {

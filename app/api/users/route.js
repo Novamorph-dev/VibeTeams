@@ -16,13 +16,15 @@ export async function GET() {
       ORDER BY id ASC
     `;
 
-    console.log(`Total users from DB: ${users.length}`);
-    console.log(`User IDs returned: ${users.map(u => u.id).join(', ')}`);
+    console.log(`GET /api/users — returned ${users.length} users`);
 
-    return NextResponse.json({ users, count: users.length, ids: users.map(u => u.id) }, {
+    return NextResponse.json({ users, count: users.length }, {
       headers: {
-        "Cache-Control": "no-store, no-cache, must-revalidate",
+        "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
         "Pragma": "no-cache",
+        "Surrogate-Control": "no-store",
+        "CDN-Cache-Control": "no-store",
+        "Vercel-CDN-Cache-Control": "no-store",
       },
     });
   } catch (error) {
